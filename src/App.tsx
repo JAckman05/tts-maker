@@ -217,8 +217,23 @@ export default function App() {
       });
 
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || `Synthesis failed (HTTP ${res.status})`);
+        let errMsg = `Synthesis failed (HTTP ${res.status})`;
+        try {
+          const contentType = res.headers.get("content-type") || "";
+          if (contentType.includes("application/json")) {
+            const errorData = await res.json();
+            if (errorData?.error) errMsg = errorData.error;
+          } else {
+            const rawText = await res.text();
+            if (rawText) {
+              const cleanText = rawText.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+              if (cleanText) errMsg = `${errMsg}: ${cleanText.slice(0, 160)}`;
+            }
+          }
+        } catch {
+          // fallback
+        }
+        throw new Error(errMsg);
       }
 
       const data = await res.json();
