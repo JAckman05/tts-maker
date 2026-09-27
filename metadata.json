@@ -1,0 +1,6 @@
+{
+  "name": "VoxPrompt Studio - Gemini TTS Prompt Workbench",
+  "description": "Interactive Text-to-Speech prompt engineering studio powered by Gemini 3.8 Flash TTS with voice personas, emotional direction, and multi-speaker screenplays.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
